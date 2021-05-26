@@ -16,7 +16,7 @@ defaults to \code{2}}
 Numeric representing \code{x} raised to the power of \code{power}.
 }
 \description{
-This functino raises input to a power
+This function raises input to a power
 }
 \examples{
 my_pow(4)
