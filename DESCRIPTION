@@ -1,0 +1,14 @@
+Package: stat302package
+Title: Project 3 Stat 302
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Ruofeng",
+           family = "Tang",
+           role = c("aut", "cre"),
+           email = "trf@uw.edu")
+Description: A package for project 3.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
