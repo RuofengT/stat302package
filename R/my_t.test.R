@@ -1,9 +1,22 @@
-# this function takes a numeric vector of data x, a string specifying types of
-# t test wanted, with choices "two.sided", "less" or "greater", and it takes
-# a number mu indicating the null hypothesis.
-# it conducts t test with given parameters, and returns a list including:
-# the numeric test statistic, the degrees of freedom, the type of t test given,
-# and the numeric p-value.
+#' T Test
+#'
+#' This function performs t test on given data
+#'
+#' @param x Numeric vector of data
+#' @param alternative A string specifying types of t test wanted, with choices
+#' "two.sided", "less" or "greater".
+#' @param mu a number indicating the null hypothesis.
+#'
+#' @return a list including: the numeric test statistic, the degrees of freedom,
+#' the type of t test given, and the numeric p-value.
+#'
+#' @examples
+#' my_t.test(lifeExp, "two.sided", 60)
+#' my_t.test(lifeExp, "less", 60)
+#' my_t.test(lifeExp, "greater", 60)
+#'
+#' @export
+
 my_t.test <- function(x, alternative, mu) {
   # check if the type of t test wanted was legitimate. If the input is not from
   # choices provided, an error message will show up

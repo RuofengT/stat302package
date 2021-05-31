@@ -1,7 +1,18 @@
-# this function takes a formula and a dataset, then performs linear regression
-# on the dataset using the formula.
-# for each coefficient including the intercept, the function returns:
-# the estimate, the standard error, the t value, and Pr(>|t|)
+#' Linear Regression
+#'
+#' This function performs linear regression on given data
+#'
+#' @param formula Formula used for regression
+#' @param data A dataset used for regression
+#'
+#' @return The estimate, the standard error, the t value, and Pr(>|t|) for
+#' each coefficient including the intercept
+#'
+#' @examples
+#' my_lm(formula, my_gap)
+#'
+#' @export
+#'
 my_lm <- function(formula, data) {
   # extract the model matrix
   mat <- model.matrix(formula, data)
