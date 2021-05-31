@@ -24,4 +24,5 @@ Imports:
     tibble,
     class,
     dplyr,
-    randomForest
+    randomForest,
+    gapminder
