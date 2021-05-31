@@ -1,5 +1,5 @@
 ---
-title: "stat302package Tutorial"
+title: "Project 3: stat302package Tutorial"
 author: "Ruofeng Tang"
 output: rmarkdown::html_vignette
 vignette: >
