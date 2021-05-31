@@ -5,16 +5,18 @@
 [![R-CMD-check](https://github.com/RuofengT/stat302package/workflows/R-CMD-check/badge.svg)](https://github.com/RuofengT/stat302package/actions)
 <!-- badges: end -->
 
-The goal of stat302package is to ...
+The goal of stat302package is to perform t-test, linear model regression, k-nearest-neighbors algorithm and random forest algorithm on given data. 
 
 ## Installation
 
 You can install the the package from GitHub using:
 
-``` r
+```{r}
 devtools::install_github("https://github.com/RuofengT/stat302package")
 ```
-To view the vignettes:
+
+## Use
+The vignette demonstrates example usage of all main functions. To view the vignettes:
 
 ```{r}
 devtools::install_github("RuofengT/stat302package", build_vignette = TRUE, build_opts = c())

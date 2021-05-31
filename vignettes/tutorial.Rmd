@@ -1,5 +1,5 @@
 ---
-title: "Project 3: stat302package Tutorial"
+title: "stat302package Tutorial"
 author: "Ruofeng Tang"
 output: rmarkdown::html_vignette
 vignette: >
@@ -15,6 +15,28 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Introduction
+
+The goal of stat302package is to perform t-test, linear model regression, k-nearest-neighbors algorithm and random forest algorithm on given data. 
+
+You can install the the package from GitHub using:
+
+```{r, eval = FALSE}
+devtools::install_github("https://github.com/RuofengT/stat302package")
+```
+
 ```{r setup}
 library(stat302package)
+```
+
+## Tutorial for `my_t.test`
+
+This function performs t-test on given data. It takes a numeric vector `x` of data, a a string specifying types of t test wanted with choices `two.sided`, `less` or `greater`, and it takes a number `mu` indicating the null hypothesis. It then conducts t test with given parameters, and returns a list including: the numeric test statistic, the degrees of freedom, the type of t test given, and the numeric p-value.
+
+### Examples
+
+Performing t test on `lifeExp` data from `my_gapminder`, with H_0: mu = 60, H_a: mu ≠ 60:
+
+```{r}
+
 ```
