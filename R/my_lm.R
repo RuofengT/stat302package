@@ -12,7 +12,6 @@
 #' my_lm(formula, my_gap)
 #'
 #' @export
-#'
 my_lm <- function(formula, data) {
   # extract the model matrix
   mat <- model.matrix(formula, data)

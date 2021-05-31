@@ -16,7 +16,6 @@
 #' my_t.test(lifeExp, "greater", 60)
 #'
 #' @export
-
 my_t.test <- function(x, alternative, mu) {
   # check if the type of t test wanted was legitimate. If the input is not from
   # choices provided, an error message will show up

@@ -13,7 +13,6 @@
 #' my_pow(4, power = 3)
 #'
 #' @export
-
 my_pow <- function(x, power = 2) {
   return(x^power)
 }
