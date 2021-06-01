@@ -4,7 +4,7 @@
 #'
 #' @param formula Formula used for regression
 #' @param data A dataset used for regression
-#' @keywords inference
+#' @keywords inference prediction
 #'
 #' @return The estimate, the standard error, the t value, and Pr(>|t|) for
 #' each coefficient including the intercept
