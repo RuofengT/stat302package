@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/RuofengT/stat302package/workflows/R-CMD-check/badge.svg)](https://github.com/RuofengT/stat302package/actions)
+[![codecov](https://codecov.io/gh/RuofengT/stat302package/branch/master/graph/badge.svg?token=NK901UQI8U)](https://codecov.io/gh/RuofengT/stat302package)
 <!-- badges: end -->
 
 The goal of stat302package is to perform t-test, linear model regression, k-nearest-neighbors algorithm and random forest algorithm on given data. 
