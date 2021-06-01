@@ -6,14 +6,15 @@
 #' @param alternative A string specifying types of t test wanted, with choices
 #' "two.sided", "less" or "greater".
 #' @param mu a number indicating the null hypothesis.
+#' @keywords inference
 #'
 #' @return a list including: the numeric test statistic, the degrees of freedom,
 #' the type of t test given, and the numeric p-value.
 #'
 #' @examples
-#' my_t.test(lifeExp, "two.sided", 60)
-#' my_t.test(lifeExp, "less", 60)
-#' my_t.test(lifeExp, "greater", 60)
+#' my_t.test(my_gapminder$lifeExp, "two.sided", 60)
+#' my_t.test(my_gapminder$lifeExp, "less", 60)
+#' my_t.test(my_gapminder$lifeExp, "greater", 60)
 #'
 #' @export
 my_t.test <- function(x, alternative, mu) {

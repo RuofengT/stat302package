@@ -22,8 +22,9 @@ the type of t test given, and the numeric p-value.
 This function performs t test on given data
 }
 \examples{
-my_t.test(lifeExp, "two.sided", 60)
-my_t.test(lifeExp, "less", 60)
-my_t.test(lifeExp, "greater", 60)
+my_t.test(my_gapminder$lifeExp, "two.sided", 60)
+my_t.test(my_gapminder$lifeExp, "less", 60)
+my_t.test(my_gapminder$lifeExp, "greater", 60)
 
 }
+\keyword{inference}

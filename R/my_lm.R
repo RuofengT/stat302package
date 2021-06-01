@@ -4,12 +4,13 @@
 #'
 #' @param formula Formula used for regression
 #' @param data A dataset used for regression
+#' @keywords inference
 #'
 #' @return The estimate, the standard error, the t value, and Pr(>|t|) for
 #' each coefficient including the intercept
 #'
 #' @examples
-#' my_lm(formula, my_gap)
+#' my_lm(lifeExp ~ gdpPercap + continent, my_gapminder)
 #'
 #' @export
 my_lm <- function(formula, data) {

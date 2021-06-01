@@ -25,4 +25,7 @@ Imports:
     class,
     dplyr,
     randomForest,
-    gapminder
+    gapminder,
+    ggplot2,
+    gridExtra,
+    kableExtra

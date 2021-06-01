@@ -38,11 +38,190 @@ This function performs t-test on given data. It takes a numeric vector `x` of da
 Performing t test on `lifeExp` data from `my_gapminder`, with H_0: mu = 60, H_a: mu ≠ 60:
 
 ```{r}
-
+my_t.test(my_gapminder$lifeExp, "two.sided", 60)
 ```
+
+The p-value is larger than alpha = 0.05, so we cannot conclude anything;
+
+Performing t test on `lifeExp` data from `my_gapminder`, with H_0: mu = 60, H_a: mu < 60:
+
+```{r}
+my_t.test(my_gapminder$lifeExp, "less", 60)
+```
+
+The p-value is smaller than alpha = 0.05, so we should reject null hypothesis H_0: mu = 60, meaning that we should not believe that `lifeExp` has mean value 60.
+
+Performing t test on `lifeExp` data from `my_gapminder`, with H_0: mu = 60, H_a: mu > 60:
+
+```{r}
+my_t.test(my_gapminder$lifeExp, "greater", 60)
+```
+
+The p-value is larger than alpha = 0.05, so we cannot conclude anything.
 
 ## 3.Tutorial for `my_lm`
 
+This function performs linear regression on given data. It takes a linear model `formula` and the dataset `data`. Then it returns The estimate, the standard error, the t value, and Pr(>|t|) for each coefficient including the intercept.
+
+### Examples
+
+Performing linear regression on `lifeExp` from `my_gapminder` based on `gdpPercap` and `continent`. 
+
+```{r}
+# creates the formula for linear regression
+formula <- lifeExp ~ gdpPercap + continent
+# performs linear regression
+results_lm <- my_lm(formula, my_gapminder)
+# display regression results
+results_lm
+```
+
+The `gdpPercap` coefficient is `r results_lm[2, 1]`. It means that per unit of `gdpPercap` has around `r results_lm[2, 1]` unit of influence on `lifeExp`. If we look at `my_gapminder` data, we see that `gdpPercap` ranges from around 200 to 100,000, while `lifeExp` ranges from around 23 to 82. It makes sense that per unit of `gpdPercap` does not influence `lifeExp` much.
+
+The hypothesis test associated with `gdpPercap` coefficient = `beta` is that H_0: `beta` = 0, H_a: `beta` ≠ 0. 
+
+The associated p-value is Pr(>|t|) in the results for `gdpPercap`: `r results_lm[2, 4]`. It is much smaller than alpha = 0.05, so we should reject H_0:`beta` = 0; in other words, we reject that `gdpPercap` has no influence on `lifeExp`.
+
+Plot actual vs. fitted values:
+
+```{r}
+library(ggplot2)
+# check levels in my_gapminder$continent
+levels(my_gapminder$continent)
+# get numerical information from my_gapminder$continent
+continent_vals <- as.numeric(my_gapminder$continent)
+# replace numerical information with beta_hats
+continent_vals[continent_vals == 1] <- 0
+continent_vals[continent_vals == 2] <- results_lm[3, 1]
+continent_vals[continent_vals == 3] <- results_lm[4, 1]
+continent_vals[continent_vals == 4] <- results_lm[5, 1]
+continent_vals[continent_vals == 5] <- results_lm[6, 1]
+# produce fitted values
+y_hat <- my_gapminder$gdpPercap * results_lm[2, 1] + continent_vals +
+  results_lm[1, 1]
+# plot actual vs. fitted graph
+my_df <- data.frame(actual = my_gapminder$lifeExp, fitted = y_hat)
+ggplot(my_df, aes(x = fitted, y = actual)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, col = "red", lty = 2) + 
+  theme_bw(base_size = 15) +
+  labs(x = "Fitted values", y = "Actual values", title = "Actual vs. Fitted") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Ideally, the points should cluster along the red dotted line y = x, that is "actual equals fitted". The plot we have do cluster along the red dotted line, but it has huge variances at places like fitted values around 50, 60 or 65. This suggests that our linear model captures some features in data, but it is not good enough to fit the data.
+
 ## 4.Tutorial for `my_knn_cv`
 
+This function implements k-nearest-neighbors algorithm on given data, and performs k-fold cross validation. It takes the input data frame, the true class value of the training data, the number of neighbors and the number of folds. It then returns a list with objects "class": a vector of the predicted class for all observations; "cv_err": a numeric with the cross-validation misclassification error.
+
+### Examples
+
+Using `my_penguins` data, predict output class `species` using covariates `bill_length_mm`, `bill_depth_mm`, `flipper_length_mm`, and `body_mass_g` with k = 5 folds, and repeat for i nearest neighbors, i = 1 : 10. Then decide which model is better based on training misclassification rates and CV misclassification rates.
+
+```{r, message = FALSE}
+library(class)
+library(dplyr)
+# filter useful columns in my_penguins dataset
+dat <- na.omit(my_penguins[, c("species", "bill_length_mm", "bill_depth_mm",
+                  "flipper_length_mm", "body_mass_g")])
+
+# store true classifications of dataset
+cl <- dat$species
+
+# leave out true classifications
+dat <- dat[, c("bill_length_mm", "bill_depth_mm",
+               "flipper_length_mm", "body_mass_g")]
+
+# creates an empty matrix to store training and CV misclassification rates
+results_knn <- matrix(NA, 10, 2)
+
+# perform k-nearest-neighbor classification with 5 folds, iterating through
+# k = 1: 10.
+for (i in 1 : 10) {
+  # records training misclassification rate
+  results_knn[i, 1] <- sum(knn(dat, dat, cl, k = i) != cl) / nrow(dat)
+  # records CV misclassification rate
+  results_knn[i, 2] <- my_knn_cv(dat, cl, i, 5)[[2]]
+}
+# print out the results
+results_knn
+```
+
+Based on training misclassification rate, I would choose k = 1, training misclassification rate lowest = 0, 1-nearest-neighbor;
+Based on CV misclassification rate, I would choose k = 1 as well, CV misclassfication rate lowest = 0.175, 1-nearest-neighbor.
+
+In practice, I would choose k = 1 solely based on it having the lowest CV misclassification rate. k-fold cross validation divides the dataset into k folds, and use k - 1 training folds to predict 1 test fold. It will be repeated k times, and every fold will be predicted based on other k - 1 folds. This way, the whole dataset is both training set and test set at the same time. We used all data to train the model, but it is also tested well. CV misclassification rate is an indicator to how accurate the model is, so we should choose the most accurate model based on it.
+
 ## 5.Tutorial for `my_rf_cv`
+
+This function implements random forest algorithm and k-fold cross validation together on given data. It takes the input data frame and the number of folds. It then returns a numeric with the cross validation error.
+
+### Examples
+
+Using `my_penguins` data, predict `body_mass_g` using covariates `bill_length_mm`, `bill_depth_mm`, and `flipper_length_mm` with k = 2, 5, 10. For each k, run the function 30 times and stores all MSE errors. 
+
+```{r, message = FALSE}
+library(randomForest)
+# filter useful columns in my penguins dataset
+dat2 <- na.omit(my_penguins[, c("body_mass_g", "bill_length_mm", 
+                             "bill_depth_mm", "flipper_length_mm")])
+# creates a matrix to store all MSE errors
+results_rf <- matrix(NA, 30, 3)
+# store k values wanted
+count <- c(2, 5, 10)
+# iterate through k = 2, 5, 10
+for (i in 1 : 3) {
+  for (j in 1 : 30) {
+    # store MSE error for required k
+    results_rf[j, i] <- my_rf_cv(dat2, count[i])
+  }
+}
+```
+
+Use `ggplot2` with 3 boxplots to display these data:
+
+```{r, message = FALSE}
+library(gridExtra)
+# plot when k = 2
+g2 <- ggplot() + 
+  geom_boxplot(aes(y = results_rf[, 1])) + 
+  scale_x_discrete( ) +
+  labs(x = "k = 2", y = "MSE Errors")
+
+# plot when k = 5
+g5 <- ggplot() + 
+  geom_boxplot(aes(y = results_rf[, 2])) + 
+  scale_x_discrete( ) +
+  labs(x = "k = 5", y = "MSE Errors")
+
+# plot when k = 10
+g10 <- ggplot() + 
+  geom_boxplot(aes(y = results_rf[, 3])) + 
+  scale_x_discrete( ) +
+  labs(x = "k = 10", y = "MSE Errors")
+
+# arrange 3 boxplots together
+grid.arrange(g2, g5, g10, nrow = 1, top = "MSE Errors for k = 2, 5, 10")
+```
+
+Notice that as k increases, the MSE Errors generally increase significantly. 
+
+Use a table to display the average CV estimate and the standard deviation of the CV estimates across k:
+
+```{r, message = FALSE}
+library(kableExtra)
+# creates an empty data frame to store values
+results_table <- data.frame(matrix(NA, 3, 2))
+rownames(results_table) = c("k = 2", "k = 5", "k = 10")
+colnames(results_table) = c("CV estimate", "Standard Deviation")
+# store average CV estimates and standard deviations across k
+for (i in 1 : 3) {
+  results_table[i, 1] <- mean(results_rf[, i])
+  results_table[i, 2] <- sd(results_rf[, i])
+}
+# presents the table
+kable_styling(kable(results_table))
+```
+
+As k increases, the average CV estimate and the standard deviation increases significantly. From the boxplots, we can also see that all MSE errors increase as k increases. As we divide the dataset into more folds, each fold varies more, resulting in increasing errors. When we have only 2 folds, k = 2, we are just using two parts of the dataset to train each other; when we have 10 folds, k = 10, we are dealing with much more complicated training-testing situations, since we use 9 folds to predict 1 fold for 10 times.

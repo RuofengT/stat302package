@@ -19,6 +19,7 @@ each coefficient including the intercept
 This function performs linear regression on given data
 }
 \examples{
-my_lm(formula, my_gap)
+my_lm(lifeExp ~ gdpPercap + continent, my_gapminder)
 
 }
+\keyword{inference}
