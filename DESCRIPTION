@@ -27,5 +27,4 @@ Imports:
     randomForest,
     gapminder,
     ggplot2,
-    gridExtra,
     kableExtra
