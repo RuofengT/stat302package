@@ -23,3 +23,4 @@ my_lm(lifeExp ~ gdpPercap + continent, my_gapminder)
 
 }
 \keyword{inference}
+\keyword{prediction}

@@ -165,7 +165,7 @@ Using `my_penguins` data, predict `body_mass_g` using covariates `bill_length_mm
 library(randomForest)
 # filter useful columns in my penguins dataset
 dat2 <- na.omit(my_penguins[, c("body_mass_g", "bill_length_mm", 
-                             "bill_depth_mm", "flipper_length_mm")])
+                                "bill_depth_mm", "flipper_length_mm")])
 # creates a matrix to store all MSE errors
 results_rf <- matrix(NA, 30, 3)
 # store k values wanted
@@ -201,7 +201,7 @@ ggplot() +
   labs(x = "k = 10", y = "MSE Errors", title = "30 MSE Errors when k = 10")
 ```
 
-Notice that as k increases, the MSE Errors generally increase significantly. 
+Notice that as k increases, the MSE Errors generally decrease significantly. 
 
 Use a table to display the average CV estimate and the standard deviation of the CV estimates across k:
 
@@ -220,4 +220,4 @@ for (i in 1 : 3) {
 kable_styling(kable(results_table))
 ```
 
-As k increases, the average CV estimate and the standard deviation increases significantly. From the boxplots, we can also see that all MSE errors increase as k increases. As we divide the dataset into more folds, each fold varies more, resulting in increasing errors. When we have only 2 folds, k = 2, we are just using two parts of the dataset to train each other; when we have 10 folds, k = 10, we are dealing with much more complicated training-testing situations, since we use 9 folds to predict 1 fold for 10 times.
+As k increases, the average CV estimate slightly decreases and the standard deviation decreases significantly. I think this is because as the number of folds increases, the number of test fold observations to be predicted decreases and train fold observations increases, resulting in better models with lower bias. So the CV estimates decreases, and they become more similar as k increases.

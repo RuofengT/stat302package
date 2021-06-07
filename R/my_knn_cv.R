@@ -27,22 +27,24 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
   fold <- sample(rep(1 : k_cv, length = nrow(train)))
   # link the fold numbers to input data frame
   train["fold"] <- fold
+  # creates a vector to store MSE for each fold
+  MSE <- c(1 : k_cv)
 
-  # creates a data frame to store predictions for each element
-  predictions <- data.frame("fold" = fold)
-
-  # iterate through each fold, and store predictions for each test fold
+  # iterate through each fold, and calculate MSE for each test fold
   for (i in 1 : k_cv) {
-    predictions[predictions$fold == i, "prediction"] <-
-      class::knn(train[train$fold != i, ], train[train$fold == i, ],
-                 cl[train$fold != i], k = k_nn)
+    MSE[i] <- sum(class::knn(train[train$fold != i, ],
+                             train[train$fold == i, ],
+                             cl[train$fold != i],
+                             k = k_nn) !=
+                    cl[train$fold == i]) /
+      nrow(train[train$fold == i, ])
   }
 
-  # get CV misclassification rate
-  cv_error <- sum(predictions[, "prediction"] != cl) / nrow(train)
+  # get misclassification rate
+  cv_error <- mean(MSE)
 
-  # get predictions
-  class <- dplyr::pull(predictions["prediction"])
+  # get predicted classes for each observation
+  class <- class::knn(train, train, cl, k_nn)
 
   # return a list containing both results
   return(list(class, cv_error))
